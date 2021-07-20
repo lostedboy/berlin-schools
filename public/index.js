@@ -18,6 +18,9 @@ function addMarkers(map, schools, infoWindow) {
         school = schools.data[i];
 
         if (school.type === 'Grundschule'
+            // && !!school.students_non_german_percentage
+            // && school.students_non_german_percentage > 10
+            // && school.students_non_german_percentage < 40
         ) {
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(school.lat, school.lng),
@@ -35,7 +38,14 @@ function addMarkers(map, schools, infoWindow) {
 
 function getInfoWindowContent(school) {
     var contentString = '<div id="content">' +
-        '<div><a href="'+ school.url +'" target="_blank">' + school.name + '</a></div><br/>'
+        '<div><a href="'+
+        school.url +
+        '" target="_blank">' +
+        school.name +
+        '</a>' +
+        '<br/>non-German language of origin: ' + school.students_non_german_percentage + '%' +
+        '<br/>languages: ' + school.languages +
+        '</div><br/>'
     ;
 
     school.inspections.forEach(inspection => {
