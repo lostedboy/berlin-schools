@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  php-fpm:
+    container_name: berlin-schools-fpm
+    build:
+      dockerfile: docker/php-fpm/Dockerfile
+      context: .
+    volumes:
+      - ./:/var/www/berlin-schools
+    ports:
+      - 9000:9000
+  nginx:
+    container_name: berlin-schools-nginx
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/berlin-schools.develop:/etc/nginx/conf.d/berlin-schools.develop
+      - ./:/var/www/berlin-schools
+    ports:
+      - "80:80"
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.111.0/24
